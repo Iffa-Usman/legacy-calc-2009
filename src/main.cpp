@@ -2,14 +2,12 @@
 
 using namespace std;
 
-int main(){
-    double loan_amount,interest_rate,number_of_years,total_amount,monthly_amount;
-//Big Fix 1: Valdating Inputs to prevent negative or invalid loan amounts
-	cout<<"Enter the loan amount: ";
-	cin>>loan_amount;
-	
-    do 
-	{
+int main() {
+    double loan_amount,interest_rate,number_of_years;
+	long double total_amount, monthly_amount; //Bug Fix 2: Safer calculations using long double
+    
+	//Big Fix 1: Valdating Inputs to prevent negative or invalid loan amounts
+    do {
       cout << "Enter the loan amount: ";
       cin >> loan_amount;
       if(loan_amount <= 0) {
@@ -17,8 +15,7 @@ int main(){
 	  }
     } while(loan_amount <= 0);
 
-    do 
-	{
+    do {
       cout << "Enter the interest rate: ";
       cin >> interest_rate;
       if(interest_rate < 0) {
@@ -26,17 +23,19 @@ int main(){
 	  }
     } while(interest_rate < 0);
 
-    do 
-	{
+    do {
       cout << "The number of years: ";
       cin >> number_of_years;
       if(number_of_years <= 0) {
         cout << "Error: Tenure must be at least 1 year!" << endl;
 	  }
     } while(number_of_years <= 0);
-	
-	total_amount=(number_of_years*loan_amount)+(number_of_years*loan_amount*(interest_rate/100.00));
-	monthly_amount=total_amount/(number_of_years*12);
+    
+	//Bug Fix 3: Calculations done step by step to prevent overflow
+	long double principal = loan_amount; 
+    long double interest = principal * (interest_rate / 100.0L) * number_of_years; 
+    total_amount = principal * number_of_years + interest;             
+    monthly_amount = total_amount / (number_of_years * 12);            
 
 	cout<<"Total amount to be paid: "<<total_amount<<endl;
 	cout<<"Total interest: "<<total_amount-(number_of_years*loan_amount)<<endl;
