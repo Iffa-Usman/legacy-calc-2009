@@ -1,3 +1,7 @@
+calc
+*.exe
+*.o
+!docs/
 *.[oa]
 *~
 *.mk
